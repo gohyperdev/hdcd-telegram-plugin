@@ -1,5 +1,5 @@
 #!/bin/bash
-# Download hdcd-telegram binary from GitHub Releases on first run.
+# Download hdcd-telegram binary from GitHub Releases.
 # Binary is cached in CLAUDE_PLUGIN_DATA so it survives plugin updates.
 
 set -euo pipefail
@@ -22,8 +22,7 @@ ARCH="$(uname -m)"
 case "$OS" in
   linux)  PLATFORM="linux" ;;
   darwin) PLATFORM="macos" ;;
-  mingw*|msys*|cygwin*) PLATFORM="windows" ;;
-  *) echo "Unsupported OS: $OS" >&2; exit 1 ;;
+  *) echo "Unsupported OS: $OS — use setup.ps1 on Windows" >&2; exit 1 ;;
 esac
 
 case "$ARCH" in
@@ -32,13 +31,7 @@ case "$ARCH" in
   *) echo "Unsupported architecture: $ARCH" >&2; exit 1 ;;
 esac
 
-ARCHIVE_NAME="hdcd-telegram-${VERSION}-${PLATFORM}-${ARCH_LABEL}"
-if [ "$PLATFORM" = "windows" ]; then
-  ARCHIVE_NAME="${ARCHIVE_NAME}.zip"
-else
-  ARCHIVE_NAME="${ARCHIVE_NAME}.tar.gz"
-fi
-
+ARCHIVE_NAME="hdcd-telegram-${VERSION}-${PLATFORM}-${ARCH_LABEL}.tar.gz"
 DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${VERSION}/${ARCHIVE_NAME}"
 
 mkdir -p "$DATA_DIR"
@@ -46,18 +39,12 @@ TMPDIR="$(mktemp -d)"
 trap 'rm -rf "$TMPDIR"' EXIT
 
 echo "Downloading hdcd-telegram ${VERSION} for ${PLATFORM}-${ARCH_LABEL}..." >&2
-curl -fsSL -o "${TMPDIR}/archive" "$DOWNLOAD_URL"
+curl -fsSL -o "${TMPDIR}/archive.tar.gz" "$DOWNLOAD_URL"
 
-# Extract
 cd "$TMPDIR"
-if [ "$PLATFORM" = "windows" ]; then
-  unzip -q archive
-else
-  tar xzf archive
-fi
+tar xzf archive.tar.gz
 
-# Find and install binary
-FOUND_BINARY="$(find "$TMPDIR" -name 'hdcd-telegram' -o -name 'hdcd-telegram.exe' | head -1)"
+FOUND_BINARY="$(find "$TMPDIR" -name 'hdcd-telegram' -type f | head -1)"
 if [ -z "$FOUND_BINARY" ]; then
   echo "Error: binary not found in archive" >&2
   exit 1
