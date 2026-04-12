@@ -21,13 +21,27 @@ The plugin automatically downloads the correct binary for your platform on first
    ```
 3. Restart Claude Code:
    ```bash
-   claude --dangerously-load-development-channels server:telegram
+   claude --dangerously-load-development-channels plugin:hdcd-telegram@hyperdev-plugins
    ```
 4. DM your bot — it replies with a pairing code
 5. Pair:
    ```
    /telegram:access pair <code>
    ```
+
+## Running alongside the official Telegram plugin
+
+hdcd-telegram supports `HDCD_TELEGRAM_BOT_TOKEN` as an alternative env var (v0.1.2+).
+This lets you run both plugins with separate bots — no token conflict:
+
+```bash
+# ~/.claude/channels/telegram/.env
+HDCD_TELEGRAM_BOT_TOKEN=<your-hdcd-bot-token>
+TELEGRAM_BOT_TOKEN=<official-plugin-bot-token>
+```
+
+Priority: `HDCD_TELEGRAM_BOT_TOKEN` > `TELEGRAM_BOT_TOKEN` (env and .env).
+If only `TELEGRAM_BOT_TOKEN` is set, it works as before — fully backward compatible.
 
 ## Skills
 
