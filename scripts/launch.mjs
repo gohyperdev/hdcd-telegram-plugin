@@ -7,7 +7,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync, chmod
 import { join, dirname } from "node:path";
 import { platform, arch, tmpdir, homedir } from "node:os";
 
-const VERSION = "v0.1.2";
+const VERSION = "v0.1.3";
 const REPO = "gohyperdev/hdcd-telegram";
 
 const dataDir = process.env.CLAUDE_PLUGIN_DATA || join(homedir(), ".claude", "plugins", "data", "hdcd-telegram");

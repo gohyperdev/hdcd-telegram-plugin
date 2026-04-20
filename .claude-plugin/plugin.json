@@ -1,7 +1,7 @@
 {
   "name": "hdcd-telegram",
   "description": "Rust-based Telegram channel for Claude Code — lightweight, fast, zero-dependency messaging bridge with access control and voice transcription.",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "author": {
     "name": "HyperDev",
     "url": "https://gohyperdev.com"
